@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 
+import axios from 'axios';
+
 export default class CreateExercises extends Component {
 
     constructor(props)
@@ -25,9 +27,19 @@ export default class CreateExercises extends Component {
 
     componentDidMount()
     {
-        this.setState({
-            users:['test user'],
-            username:'text user'
+        // this.setState({
+        //     users:['test user'],
+        //     username:'text user'
+        // })
+
+        axios.get('http://localhost:5000/user/')
+        .then(response =>{
+            if(response.data.length > 0){
+                this.setState({
+                    users:response.data.map(user => user.username),
+                    username: response.data[0].username
+                })
+            }
         })
     }
 
@@ -58,14 +70,16 @@ export default class CreateExercises extends Component {
 
         const exercise = {
             username:this.state.username,
-            descriprion:this.state.descriprion,
+            description:this.state.discription,
             duration:this.state.duration,
             date:this.state.date
         }
 
-        console.log(exercise);
+        // console.log(exercise);
+        axios.post('http://localhost:5000/exercises/add',exercise)
+        .then(res=>console.log(res.data));
 
-        window.location = '/';
+        // window.location = '/';
     }
     render() {
         return (
@@ -97,7 +111,7 @@ export default class CreateExercises extends Component {
                             required
                             className="form-control"
                             value={this.state.description}
-                            onChange={this.onChangeDescription}
+                            onChange={this.onChangeDiscription}
                         />
                    </div>
                    <div className="form-group">     
@@ -105,7 +119,7 @@ export default class CreateExercises extends Component {
                         <input type="text"
                             required
                             className="form-control"
-                            value={this.state.description}
+                            value={this.state.duration}
                             onChange={this.onChangeDuration}
                         />
                    </div>
