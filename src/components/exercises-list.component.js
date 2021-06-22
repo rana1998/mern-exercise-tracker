@@ -18,9 +18,9 @@ const Exercise = props =>
             {props.exercise.date.substring(0,10)}
         </td>
         <td>
-            <Link to={"/edit/"+props.excercise._id}>edit</Link> |
+            <Link to={"/edit/"+props.exercise._id}>edit</Link> |
             <a href="#" onClick={() => {
-                props.deleteExercise(props.excercise._id)
+                props.deleteExercise(props.exercise._id)
             }}>Delete</a>
         </td>
 
@@ -48,8 +48,10 @@ export default class ExercisesList extends Component {
         axios.get('http://localhost:5000/exercises')
         .then(response =>{
             this.setState({
-                excerrcises : response.data
+                excercises : response.data
             })
+
+            console.log(response.data);
         })
         .catch((error) =>
         {
@@ -71,7 +73,7 @@ export default class ExercisesList extends Component {
     exercisesList()
     {
         return this.state.excercises.map( currentexercise => {
-            return <Exercise excercise = {currentexercise} deleteExercise={this.deleteExercise} key={currentexercise._id} />
+            return <Exercise exercise = {currentexercise} deleteExercise={this.deleteExercise} key={currentexercise._id} />
         })
     }
 
